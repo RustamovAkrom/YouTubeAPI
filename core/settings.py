@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'apps.videos.apps.VideosConfig',
 
     # Third party apps
+    'rest_framework',
     'modeltranslation',
+    'rosetta',
 
 ]
 
@@ -121,10 +123,10 @@ LANGUAGES = (
     ("uz", gettext("Uzbek")),
 )
 
-LOCALE__PATHS = [os.path.join(BASE_DIR, "locale")]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
-MODELTRANSLATION_FALLBACK_LANGUAGES = ('en', 'ru', 'uz')
+MODELTRANSLATION_LANGUAGES = ('en', 'ru', 'uz')
 MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'en'
 
 STATIC_URL = '/static/'
@@ -182,6 +184,13 @@ FILE_UPLOAD_HANDLERS = [
     "django.core.files.uploadhandler.TemporaryFileUploadHandler",
 ]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 ## Security productions
 # SECURE_HSTS_SECONDS = 31536000  # 1 year
