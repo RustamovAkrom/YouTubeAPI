@@ -1,4 +1,5 @@
 import os
+import sys
 
 from pathlib import Path
 
@@ -38,8 +39,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "django.middleware.locale.LocaleMiddleware",
     'django.middleware.common.CommonMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -120,6 +121,8 @@ LANGUAGES = (
     ("uz", gettext("Uzbek")),
 )
 
+LOCALE__PATHS = [os.path.join(BASE_DIR, "locale")]
+
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'en'
 MODELTRANSLATION_FALLBACK_LANGUAGES = ('en', 'ru', 'uz')
 MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'en'
@@ -141,6 +144,12 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': 'logs/debug.log',
+        },
+    },
+    'formatters': {
+        'utf8': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            'encoding': 'utf-8',
         },
     },
     'loggers': {

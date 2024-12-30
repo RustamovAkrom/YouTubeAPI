@@ -15,6 +15,10 @@ class Notification(TimestampedModel):
         ordering = ['-created_at']
         db_table = "notifications"
 
+    def mark_as_read(self):
+        self.is_read = True
+        self.save()
+        
     def __str__(self):
         return f"{self.user} - {self.message}"
     

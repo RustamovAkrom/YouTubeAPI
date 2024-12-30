@@ -15,3 +15,5 @@ class Comment(TimestampedModel):
         ordering = ['-created_at']
         db_table = "video_comments"
 
+    def __str__(self):
+        return f"{self.user} - {self.video}"
