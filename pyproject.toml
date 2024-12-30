@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "youtubeapi"
+version = "0.1.0"
+description = ""
+authors = ["Akromjon"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.1.4"
+python-dotenv = "^1.0.1"
+pillow = "^11.0.0"
+django-modeltranslation = "^0.19.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
