@@ -7,7 +7,6 @@ from apps.shared.models import TimestampedModel
 class WatchHistory(TimestampedModel):
     user = models.ForeignKey("users.User", models.CASCADE, related_name="watch_histories")
     video = models.ForeignKey("videos.Video", models.CASCADE, related_name="watch_histories")
-    duration_watched = models.DurationField(default=0)
 
     class Meta:
         verbose_name = _("Watch History")
