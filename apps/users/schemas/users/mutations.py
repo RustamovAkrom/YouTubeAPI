@@ -2,6 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.db import transaction
 
 import graphene
 import graphql_jwt
@@ -12,6 +13,7 @@ import jwt
 
 from apps.users.schemas.users.types import UserType
 from apps.users.models import User
+from apps.users.permissions import IsOwnerPermission, IsAuthenticatedPermission
 
 
 class RegisterUser(graphene.Mutation):
@@ -113,6 +115,7 @@ class DeleteUser(graphene.Mutation):
  
 class UpdateProfile(graphene.Mutation):
     class Arguments:
+        user_id = graphene.ID()
         first_name = graphene.String()
         last_name = graphene.String()
         username = graphene.String()
@@ -121,23 +124,30 @@ class UpdateProfile(graphene.Mutation):
 
     user = graphene.Field(UserType)
 
-    @login_required
-    def mutate(self, root, email=None, first_name=None, last_name=None, username=None, avatar=None):
-        print(root)
-        user = root.context.user
-        # print(user)
+    # @login_required
+    # @transaction.atomic
+    def mutate(self, info, user_id, email=None, first_name=None, last_name=None, username=None, avatar=None):
+        user = info.context.user
+        
+        # Permissions
+        IsOwnerPermission().has_permission(info.context, user_id)
+        
+        profile_user = User.objects.get(id=user_id)
 
         if username:
             if User.objects.filter(username=username).exists():
                 raise ValidationError("Username already exists.")
-            user.email = email
+            profile_user.username = username
         if email:
             if User.objects.filter(email=email).exists():
                 raise ValidationError("Email already exists.")
-        if first_name:
-            user.first_name = first_name
-        if last_name:
-            user.last_name = last_name
+            profile_user.email = email
+        
+        profile_user.first_name = first_name or profile_user.first_name
+        profile_user.last_name = last_name or profile_user.last_name
+        profile_user.username = username or profile_user.username
+        profile_user.email = email or profile_user.email
+
         if avatar:
             user.avatar = avatar
 

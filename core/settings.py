@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'rosetta',
     'django_graphiql',
     'graphene_django',
+    'graphene_file_upload',
 
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
 ]
@@ -210,6 +211,7 @@ GRAPHENE = {
     'SCHEMA': 'core.schema.schema',  # Укажите путь к вашему файлу схемы
     'MIDDLEWARE': [
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
+        'apps.shared.middleware.CustomGraphQLMiddleware',
     ]
 }
 
