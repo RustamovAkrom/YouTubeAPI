@@ -1,14 +1,20 @@
 from django.conf.urls.i18n import i18n_patterns
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import admin
 from django.urls import path, include
 
 from django.conf.urls.static import static
 from django.conf import settings
 
+from graphene_django.views import GraphQLView
+
+from .schema import schema
+
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("rosetta/", include("rosetta.urls")),
+    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True))),
 ] + i18n_patterns(
     path('admin/', admin.site.urls),
 )

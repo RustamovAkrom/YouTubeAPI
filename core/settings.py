@@ -35,7 +35,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'modeltranslation',
     'rosetta',
+    'django_graphiql',
+    'graphene_django',
 
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
 ]
 
 MIDDLEWARE = [
@@ -202,3 +205,22 @@ REST_FRAMEWORK = {
 # SESSION_COOKIE_SECURE = True
 
 # CSRF_COOKIE_SECURE = True
+
+GRAPHENE = {
+    'SCHEMA': 'core.schema.schema',  # Укажите путь к вашему файлу схемы
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ]
+}
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+
+    # Optional
+    "JWT_LOG_RUNNING_REFRESH_TOKEN": True,
+}
