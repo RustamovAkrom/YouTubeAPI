@@ -14,6 +14,7 @@ import jwt
 from apps.users.schemas.users.types import UserType
 from apps.users.models import User
 from apps.users.permissions import IsOwnerPermission, IsAuthenticatedPermission
+from .google.mutations import GoogleAuthMutation
 
 
 class RegisterUser(graphene.Mutation):
@@ -169,5 +170,6 @@ class Mutation(graphene.ObjectType):
     verify_token = graphql_jwt.Verify.Field() # Проверка токена
     refresh_token = graphql_jwt.Refresh.Field() # Обновление токена
 
+    google_auth = GoogleAuthMutation.Field()
 
 __all__ = ("Mutation", )

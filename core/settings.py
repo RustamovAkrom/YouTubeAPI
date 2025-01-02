@@ -2,9 +2,10 @@ import os
 import sys
 
 from pathlib import Path
+from datetime import timedelta
 
 from django.utils.translation import gettext_lazy as _
-
+from core.config import *  # noqa
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,30 +18,7 @@ DEBUG = bool(os.getenv("DEBUG"))
 
 ALLOWED_HOSTS = str(os.getenv("ALLOWED_HOSTS")).split(",")
 
-INSTALLED_APPS = [
-    # Default apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # Project apps
-    'apps.shared.apps.SharedConfig',
-    'apps.users.apps.UsersConfig',
-    'apps.videos.apps.VideosConfig',
-
-    # Third party apps
-    'rest_framework',
-    'modeltranslation',
-    'rosetta',
-    'django_graphiql',
-    'graphene_django',
-    'graphene_file_upload',
-
-    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
-]
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,60 +120,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'logs/debug.log',
-#         },
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'formatters': {
-#         'utf8': {
-#             'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-#             'encoding': 'utf-8',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file', 'console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
-
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-CACHES = {
-    "default": {
-        # "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        # "BACKEND": 'django.core.cache.backends.db.DatabaseCache',
-        "BACKEND": 'django.core.cache.backends.filebased.FileBasedCache',
-        # "BACKEND": 'django.core.cache.backends.dummy.DummyCache',
-        # "BACKEND": 'django.core.cache.backends.locmem.LocMemCache',
-        # "BACKEND": 'django.core.cache.backends.memcached.PyMemcacheCache',
-        # "BACKEND": 'django.core.cache.backends.memcached.PyLibMCCache',
-        # "BACKEND": 'django.core.cache.backends.redis.RedisCache',
-        "LOCATION": os.path.join(BASE_DIR, "cache")
-    }
-}
-
 AUTH_USER_MODEL = "users.User"
 
 FILE_UPLOAD_HANDLERS = [
@@ -203,13 +127,10 @@ FILE_UPLOAD_HANDLERS = [
     "django.core.files.uploadhandler.TemporaryFileUploadHandler",
 ]
 
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 ## Security productions
 # SECURE_HSTS_SECONDS = 31536000  # 1 year
@@ -221,30 +142,3 @@ REST_FRAMEWORK = {
 # SESSION_COOKIE_SECURE = True
 
 # CSRF_COOKIE_SECURE = True
-
-GRAPHENE = {
-    'SCHEMA': 'core.schema.schema',  # Укажите путь к вашему файлу схемы
-    'MIDDLEWARE': [
-        'graphql_jwt.middleware.JSONWebTokenMiddleware',
-        'apps.shared.middleware.CustomGraphQLMiddleware',
-    ]
-}
-
-AUTHENTICATION_BACKENDS = [
-    'graphql_jwt.backends.JSONWebTokenBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
-
-GRAPHQL_JWT = {
-    "JWT_VERIFY_EXPIRATION": True,
-
-    # Optional
-    "JWT_LOG_RUNNING_REFRESH_TOKEN": True,
-}
-
-# Celery configurations
-CELERY_TIMEZONE = TIME_ZONE
-CELERY_TASK_TRACK_STARTED = True
-# CELERY_TASK_TIME_LIMIT = 30 * 60
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
