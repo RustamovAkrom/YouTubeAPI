@@ -1,12 +1,11 @@
 import os
-import sys
 
 from pathlib import Path
-from datetime import timedelta
 
 from django.utils.translation import gettext_lazy as _
-from core.config import *  # noqa
 from dotenv import load_dotenv
+
+from core.config import *  # noqa
 
 load_dotenv()
 

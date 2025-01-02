@@ -13,29 +13,34 @@ logger = get_task_logger(__name__)
 @shared_task
 def create_notification_task(
     user_id, 
-    sender_id, 
     notification_type, 
     message, 
-    related_object_id
+    related_object_id = None,
+    sender_id = None, 
 ):  
     print("Create notification task")
     try:
+        notification = Notification()
+
+        if sender_id is not None:
+            sender = User.objects.get(id=sender_id)
+            notification.sender = sender
+
+        if related_object_id is not None:
+            notification.related_object_id = related_object_id
+
         user = User.objects.get(id=user_id)
-        sender = User.objects.get(id=sender_id)
-        
-        Notification.objects.get_or_create(
-            user=user,
-            sender=sender,
-            notification_type=notification_type,
-            message=message,
-            related_object_id=related_object_id
-        )
+
+        notification.user = user
+        notification.notification_type = notification_type
+        notification.message=message
+        notification.save()
 
         logger.info("Notification created successfully.")
 
     except User.DoesNotExist as e:
         logger.info(f"User dos not exist in create_notification_task: {e}")
-        print("User not found: " + e)
+        print(f"User not found: {e}")
 
     except Exception as e:
         logger.info(f"Error in create_notification_task: {e}")

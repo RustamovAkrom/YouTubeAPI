@@ -8,6 +8,7 @@ class Channel(TimestampedModel):
     owner = models.ForeignKey("users.User", models.CASCADE, related_name="channels")
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    avatar = models.ImageField(upload_to="channel/avatar/%Y/%m/%d", blank=True, null=True)
     subscribers = models.ManyToManyField(
         "users.User",
         symmetrical=False,
@@ -35,3 +36,6 @@ class Channel(TimestampedModel):
 
     def total_subscribers(self):
         return self.subscribers.count()
+
+    def get_avatar(self):
+        return self.avatar.url if self.avatar else None

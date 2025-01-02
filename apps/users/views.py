@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Create your views here.
+from graphene_file_upload.django import FileUploadGraphQLView
+
+
+class PrivateGraphQLView(LoginRequiredMixin, FileUploadGraphQLView):
+    pass

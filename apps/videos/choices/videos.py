@@ -7,4 +7,5 @@ class NotificationType(TextChoices):
     COMMENT = "comment", _("Comment")
     SUBSCRIPTION = "subscription", _("Subscription")
     VIDEO_UPLOAD = "video_upload", _("Video Upload")
+    VIDEO_DELETE = "video_deleted", _("Video Deleted")
     

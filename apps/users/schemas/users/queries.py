@@ -9,9 +9,9 @@ class Query(graphene.ObjectType):
 
     def resolve_users(self, info):
         return User.objects.all()
-    
+
     def resolve_user(self, info, id):
         return User.objects.get(pk=id)
 
 
-__all__ = ("Query", )
+__all__ = ("Query",)

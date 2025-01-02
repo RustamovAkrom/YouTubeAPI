@@ -4,13 +4,13 @@ from apps.users.models import User
 
 
 @shared_task
-def send_email_task(to_email, from_email, subject, message):
+def send_email_task(to_emails, from_email, subject, message):
     try:
         send_mail(
-            subject, 
-            message, 
-            from_email, 
-            [to_email], 
+            subject=subject, 
+            message=message, 
+            from_email=from_email, 
+            recipient_list=to_emails, 
             fail_silently=False
         )
     except Exception as e:

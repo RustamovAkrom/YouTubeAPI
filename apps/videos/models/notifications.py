@@ -7,7 +7,7 @@ from apps.videos.choices import NotificationType
 
 class Notification(TimestampedModel):
     user = models.ForeignKey("users.User", models.CASCADE, related_name="notifications")
-    sender = models.ForeignKey("users.User", models.SET_NULL, null=True, related_name="sent_notifications")
+    sender = models.ForeignKey("users.User", models.SET_NULL, null=True, blank=True, related_name="sent_notifications")
     notification_type = models.CharField(max_length=50, choices=NotificationType.choices)
     message = models.TextField()
     related_object_id = models.IntegerField(null=True, blank=True)
