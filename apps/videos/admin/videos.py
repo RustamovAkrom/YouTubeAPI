@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.videos.models.videos import Video
+from apps.videos.models.videos import Video, VideoDislike, VideoLike
 
 
 @admin.register(Video)
@@ -25,3 +25,12 @@ class VideoAdmin(admin.ModelAdmin):
         'visibility',
     ]
     
+
+@admin.register(VideoDislike)
+class VideoDislikeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(VideoLike)
+class VideoLikeAdmin(admin.ModelAdmin):
+    pass

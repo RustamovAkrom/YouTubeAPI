@@ -9,33 +9,33 @@ from django.conf import settings
 
 @receiver(post_save, sender=Video)
 def video_uploaded_notification(sender, instance, created, **kwargs):
-    # if created:
+    if created:
         if instance.visibility != VisibilityChoice.PRIVATE:
-
-            subject = "YouTube: Новое видео!"
-            message = f"Канал {instance.channel.name} загрузил новое видео: {instance.title}."
-            from_email = instance.channel.owner.email
-
             subscribers = instance.channel.subscribers.all()
             subscribers_email = [s.email for s in subscribers if s.email]
 
-            for subscriber in subscribers:
-                create_notification_task.delay(
-                    user_id=subscriber.id,
-                    sender_id=instance.channel.owner.id,
-                    notification_type=NotificationType.VIDEO_UPLOAD,
-                    message=message,
-                    related_object_id=instance.id,
-                )
+            if instance.channel.owner not in subscribers:
+                subject = "YouTube: Новое видео!"
+                message = f"Канал {instance.channel.name} загрузил новое видео: {instance.title}."
+                from_email = instance.channel.owner.email
 
-            if subscribers_email:
-                send_email_task.delay(
-                    to_emails=subscribers_email,
-                    from_email=from_email,
-                    subject=subject,
-                    message=message,
-                )
-                
+                for subscriber in subscribers:
+                    create_notification_task.delay(
+                        user_id=subscriber.id,
+                        sender_id=instance.channel.owner.id,
+                        notification_type=NotificationType.VIDEO_UPLOAD,
+                        message=message,
+                        related_object_id=instance.id,
+                    )
+
+                if subscribers_email:
+                    send_email_task.delay(
+                        to_emails=subscribers_email,
+                        from_email=from_email,
+                        subject=subject,
+                        message=message,
+                    )
+                    
 
 @receiver(post_delete, sender=Video)
 def video_deleted_notification(sender, instance, **kwargs):
@@ -53,4 +53,3 @@ def video_deleted_notification(sender, instance, **kwargs):
         subject="Video deleted",
         message=f'Video "{instance.title}" is deleted.',
     )
-

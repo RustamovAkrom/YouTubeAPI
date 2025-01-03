@@ -19,6 +19,10 @@ class Notification(TimestampedModel):
         ordering = ['-created_at']
         db_table = "notifications"
 
+    @classmethod
+    def unread_notifications(cls, user):
+        return cls.objects.filter(user=user, is_read=False)
+
     def mark_as_read(self):
         self.is_read = True
         self.save()

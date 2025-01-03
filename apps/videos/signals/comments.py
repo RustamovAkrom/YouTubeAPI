@@ -25,5 +25,6 @@ def comment_notification(sender, instance, created, **kwargs):
                 message=(
                     f"Пользователь {instance.user.username} оставил комментарий на ваше видео '{instance.video.title}'.\n\n"
                     f"Комментарий: {instance.message}\n"
-                    f"Ссылка на видео: https://example.com/videos/{instance.video.id}/"                )
+                    f"Ссылка на видео: https://example.com/videos/{instance.video.id}/"                
+                )
             )

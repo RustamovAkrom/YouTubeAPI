@@ -27,8 +27,10 @@ class Channel(TimestampedModel):
         return self.name
 
     def follow(self, user):
-        if not self.subscribers.filter(id=user.id).exists():
-            self.subscribers.add(user)
+        if user != self.owner:
+            if not self.subscribers.filter(id=user.id).exists():
+                self.subscribers.add(user)
+        return "You owner it is channel!"
 
     def unfollow(self, user):
         if self.subscribers.filter(id=user.id).exists():
