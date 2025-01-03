@@ -5,12 +5,22 @@ from apps.videos.choices import VideoReportTypeChoice
 
 
 class VideoReport(TimestampedModel):
+    class StatusChoices(models.TextChoices):
+        PENDING = 'pending', _("Pendning")
+        IN_PENDING = 'in_pending', _("In Pending")
+        RESOLVED = 'resolved', _("Resolved")
+
     user = models.ForeignKey("users.User", models.CASCADE, related_name="reports")
     video = models.ForeignKey("videos.Video", models.CASCADE, related_name="reports")
     report_type = models.CharField(
         max_length=50, 
         choices=VideoReportTypeChoice.choices, 
         default=VideoReportTypeChoice.OTHER
+    )
+    status = models.CharField(
+        max_length=20, 
+        choices=StatusChoices.choices, 
+        default=StatusChoices.PENDING
     )
     description = models.TextField(blank=True, null=True)
 
