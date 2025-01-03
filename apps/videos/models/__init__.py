@@ -6,3 +6,4 @@ from .playlists import * # noqa
 from .tags import * # noqa
 from .videos import * # noqa
 from .search import * # noqa
+from .report import * # noqa
