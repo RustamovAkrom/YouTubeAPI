@@ -36,7 +36,7 @@ class Video(TimestampedModel):
         models.CASCADE, 
         db_index=True,
         related_name="videos", 
-        verbose_name="Channel",
+        verbose_name=_("Channel"),
     )
     category = models.CharField(
         max_length=100, 

@@ -10,8 +10,10 @@ class BasePermission:
             raise PermissionDenied("You must be activate your account.")
         return True
 
+
 class IsAuthenticatedPermission(BasePermission):
     pass
+
 
 class IsOwnerPermission(BasePermission):
     def has_permission(self, request, user_id):

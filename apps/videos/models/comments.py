@@ -7,7 +7,7 @@ from apps.shared.models import TimestampedModel
 class Comment(TimestampedModel):
     user = models.ForeignKey("users.User", models.CASCADE, related_name="comments")
     video = models.ForeignKey("videos.Video", models.CASCADE, related_name="comments")
-    message = models.TextField()
+    message = models.TextField(verbose_name=_("Message"))
 
     class Meta:
         verbose_name = _("Comment")

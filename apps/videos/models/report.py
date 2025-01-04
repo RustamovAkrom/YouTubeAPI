@@ -15,20 +15,22 @@ class VideoReport(TimestampedModel):
     report_type = models.CharField(
         max_length=50, 
         choices=VideoReportTypeChoice.choices, 
-        default=VideoReportTypeChoice.OTHER
+        default=VideoReportTypeChoice.OTHER,
+        verbose_name=_("Report Type")
     )
     status = models.CharField(
         max_length=20, 
         choices=StatusChoices.choices, 
-        default=StatusChoices.PENDING
+        default=StatusChoices.PENDING,
+        verbose_name=_("Status"),
     )
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     def __str__(self):
         return f"Complaint from {self.user.username} about the video {self.video.title}"
     
     class Meta:
         verbose_name = _("Video Report")
-        verbose_name_plural = ("Video Reports")
+        verbose_name_plural = _("Video Reports")
         ordering = ['-created_at']
         db_table = "video_reports"
