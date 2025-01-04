@@ -1,4 +1,5 @@
 from graphene_django.types import DjangoObjectType
+import graphene
 from apps.users.models import User
 
 
@@ -16,3 +17,4 @@ class UserType(DjangoObjectType):
             'is_staff', 
             'is_superuser'
         ]
+        interface = (graphene.relay.Node, )

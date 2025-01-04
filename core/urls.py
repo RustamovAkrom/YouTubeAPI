@@ -7,6 +7,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from apps.users.views import PrivateGraphQLView
+from apps.videos import consumers
+
 
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),

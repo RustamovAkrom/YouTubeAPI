@@ -8,6 +8,9 @@ CACHES = {
         # "BACKEND": 'django.core.cache.backends.memcached.PyMemcacheCache',
         # "BACKEND": 'django.core.cache.backends.memcached.PyLibMCCache',
         "BACKEND": 'django.core.cache.backends.redis.RedisCache',
-        "LOCATION": "http://localhost:6379/0"
+        "LOCATION": "http://localhost:6379/0",
+        "OPTIONS": {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
 }

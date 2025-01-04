@@ -7,3 +7,4 @@ from .tags import * # noqa
 from .videos import * # noqa
 from .search import * # noqa
 from .report import * # noqa
+from .stream import * # noqa

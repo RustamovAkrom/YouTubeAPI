@@ -19,4 +19,5 @@ THIRD_PARTY_APPS = [
     'graphene_django',
     'graphene_file_upload',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'channels',
 ]

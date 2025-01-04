@@ -6,3 +6,4 @@ from .graphql import *  # noqa
 from .graphql_jwt import *  # noqa
 from .logging import *  # noqa
 from .rest_framework import *  # noqa
+from .channels import * # noqa

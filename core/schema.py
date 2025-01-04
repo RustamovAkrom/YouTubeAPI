@@ -8,17 +8,22 @@ from apps.videos.schemas.channels import (
     Mutation as ChannelMutation,
     Query as ChannelQuery,
 )
-
+from apps.videos.schemas.stream import (
+    Mutation as StreamMutation,
+    Query as StreamQuery
+)
 
 class Query(
     UserQuery, 
-    ChannelQuery
+    ChannelQuery,
+    StreamQuery,
 ):...
 
 
 class Mutation(
     UserMutation,
     ChannelMutation,
+    StreamMutation,
 ):...
 
 
